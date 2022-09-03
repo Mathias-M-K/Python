@@ -1,11 +1,7 @@
-from ToolBox import ToolScript
+import GlobalFunctions
 
 import re
 import openpyxl
-
-# load excel with its path
-wrkbk = openpyxl.load_workbook("../Resources/nba.xlsx")
-sh = wrkbk.active
 
 
 def clean_text(text):
@@ -21,23 +17,29 @@ def clean_text(text):
     return cleantext
 
 
-team_column_pos = ToolScript.getTeamColumnPos(sh)
+def do_assignment(document):
+    # load excel with its path
+    wrkbk = openpyxl.load_workbook("Resources/" + document + ".xlsx")
+    sh = wrkbk.active
 
-# iterate through excel and display data
-for i in range(2, sh.max_row + 1):
-    print("\n")
-    print("Row ", i)
 
-    # Printing original value
-    cell_content = sh.cell(row=i, column=team_column_pos).value
-    print("Original String -> " + cell_content)
+    team_column_pos = GlobalFunctions.get_column_pos(sh, "team")
 
-    # Printing clean value
-    cleanCellContent = clean_text(cell_content)
-    print('Clean String -> ' + cleanCellContent)
+    # iterate through excel and display data
+    for i in range(2, sh.max_row + 1):
+        print("\n")
+        print("Row ", i)
 
-    # Replaceing the old value with the corected one
-    sh.cell(row=i, column=team_column_pos).value = cleanCellContent;
+        # Printing original value
+        cell_content = sh.cell(row=i, column=team_column_pos).value
+        print("Original String -> " + cell_content)
 
-# Saving file
-wrkbk.save(filename="../output/Assignment_1.xlsx")
+        # Printing clean value
+        cleanCellContent = clean_text(cell_content)
+        print('Clean String -> ' + cleanCellContent)
+
+        # Replaceing the old value with the corected one
+        sh.cell(row=i, column=team_column_pos).value = cleanCellContent
+
+    # Saving file
+    wrkbk.save(filename="output/assignment_1_" + document + ".xlsx")

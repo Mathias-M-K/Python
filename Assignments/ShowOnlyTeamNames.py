@@ -1,35 +1,36 @@
-from ToolBox import ToolScript
-
+import GlobalFunctions
 import openpyxl
-import CleanTeamNames
-
-wrkbk = openpyxl.load_workbook("../Resources/nfl.xlsx")
-sh = wrkbk.active
-
-team_column_pos = ToolScript.getTeamColumnPos(sh)
-
-rows_to_be_removed = []
 
 
-def removeRows(rows):
-
+def remove_rows(workbook, rows):
     for i in reversed(rows):
         print(i)
-        sh.delete_rows(i)
+        workbook.delete_rows(i)
 
-# iterate through excel and display data
-for i in range(2, sh.max_row + 1):
 
-    teamName = sh.cell(row=i, column=team_column_pos).value
+def do_assignment(document):
+    wrkbk = openpyxl.load_workbook("Output/assignment_1_" + document + ".xlsx")
+    sh = wrkbk.active
 
-    # Headers, luckily for us, are very similar and easy to identify and remove
-    if teamName[0:3] == "NFC" or teamName[0:3] == "AFC":
-        print(CleanTeamNames.clean_text(teamName) + "<-- TO BE REMOVED!!")
-        rows_to_be_removed.append(i)
+    team_column_pos = GlobalFunctions.get_column_pos(sh, "team")
 
-    else:
-        print(CleanTeamNames.clean_text(teamName) + "<- Stays")
+    # We will use the win (W) column to confirm that the row is legit.
+    # If it's a number it's good, if not it's bad
+    win_column_pos = GlobalFunctions.get_column_pos(sh, "W")
 
-removeRows(rows_to_be_removed)
+    rows_to_be_removed = []
+    # iterate through excel and display data
+    for i in range(2, sh.max_row + 1):
 
-wrkbk.save(filename="../output/Assignment_2.xlsx")
+        team_name = sh.cell(row=i, column=team_column_pos).value
+        wins = sh.cell(row=i, column=win_column_pos).value
+
+        if type(wins) != int:
+            print(team_name + " <- Will be removed")
+            rows_to_be_removed.append(i)
+        else:
+            print(team_name)
+
+    remove_rows(sh, rows_to_be_removed)
+
+    wrkbk.save(filename="output/Assignment_2_" + document + ".xlsx")
