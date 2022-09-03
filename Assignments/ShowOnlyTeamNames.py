@@ -4,7 +4,7 @@ import openpyxl
 
 def remove_rows(workbook, rows):
     for i in reversed(rows):
-        print(i)
+        print("Deleteing row " + str(i))
         workbook.delete_rows(i)
 
 

@@ -26,7 +26,7 @@ def do_assignment(document):
     team_column_pos = GlobalFunctions.get_column_pos(sh, "team")
 
     # iterate through excel and display data
-    for i in range(2, sh.max_row + 1):
+    for i in range(1, sh.max_row + 1):
         print("\n")
         print("Row ", i)
 
