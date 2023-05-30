@@ -1,4 +1,4 @@
-import GlobalFunctions
+from nba_nfl_stuff import GlobalFunctions
 
 import re
 import openpyxl

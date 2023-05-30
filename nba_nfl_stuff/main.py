@@ -1,5 +1,4 @@
-from Assignments import CleanTeamNames
-from Assignments import ShowOnlyTeamNames
+from nba_nfl_stuff.Assignments import ShowOnlyTeamNames, CleanTeamNames
 
 documents = ["nba", "nfl"]
 
